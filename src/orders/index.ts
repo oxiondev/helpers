@@ -65,7 +65,13 @@ export const createExpenseInvoiceObject = (orderData) => {
       unit: ''
     }
     if (product.variantName) {
-      let totalPrice = Number((Number(product.sellingPrice) - totalDiscountPerProduct).toFixed(2))
+      let campaignDiscountAmount = 0;
+
+      if(product.campaignDiscountAmount) {
+        campaignDiscountAmount = Number(product.campaignDiscountAmount)
+      }
+
+      let totalPrice = Number((Number(product.sellingPrice) - totalDiscountPerProduct - campaignDiscountAmount).toFixed(2))
       const {
         amountWithoutVat,
         amountCleanFormat,
@@ -80,10 +86,15 @@ export const createExpenseInvoiceObject = (orderData) => {
       returnObject.vatCleanFormat = vatCleanFormat;
       returnObject.unit = product.unit;
     } else if (product.productName) {
+      let campaignDiscountAmount = 0;
+
+      if(product.campaignDiscountAmount) {
+        campaignDiscountAmount = Number(product.campaignDiscountAmount)
+      }
       returnObject.productName = product.productName;
       let totalPrice = 0;
       if (product.SatisAniSatisFiyat && product.SatisAniSatisFiyatKdv) {
-        totalPrice = Number((Number(product.SatisAniSatisFiyat) + Number(product.SatisAniSatisFiyatKdv)).toFixed(2))
+        totalPrice = Number((Number(product.SatisAniSatisFiyat) + Number(product.SatisAniSatisFiyatKdv) - campaignDiscountAmount).toFixed(2))
       } else if(product._id){
         totalPrice = Number(product.amount)
       } else {
