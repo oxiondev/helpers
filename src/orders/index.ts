@@ -11,7 +11,7 @@ export const createExpenseInvoiceObject = (orderData) => {
 
   if (orderData.returnedProducts && Object.keys(orderData.returnedProducts).length) {
     Object.values(orderData.returnedProducts).forEach((product: any) => {
-      for (let q = 0; q < Number(product.quantity); q += 1) {
+      for (let q = 0; q < Number(product.quantity || product.saleCount); q += 1) {
         products.push(product);
       }
     })
@@ -19,7 +19,7 @@ export const createExpenseInvoiceObject = (orderData) => {
 
   if (orderData.changedProducts && Object.keys(orderData.changedProducts).length) {
     Object.values(orderData.changedProducts).forEach((product: any) => {
-      for (let q = 0; q < Number(product.quantity); q += 1) {
+      for (let q = 0; q < Number(product.quantity || product.saleCount); q += 1) {
         products.push(product);
       }
     })
@@ -27,7 +27,7 @@ export const createExpenseInvoiceObject = (orderData) => {
 
   if (orderData.nonDeliveredProducts && Object.keys(orderData.nonDeliveredProducts).length) {
     Object.values(orderData.nonDeliveredProducts).forEach((product: any) => {
-      for (let q = 0; q < Number(product.quantity); q += 1) {
+      for (let q = 0; q < Number(product.quantity || product.saleCount); q += 1) {
         products.push(product);
       }
     });
@@ -35,7 +35,7 @@ export const createExpenseInvoiceObject = (orderData) => {
 
   if (orderData.productsToOperate && orderData.productsToOperate.length) {
     orderData.productsToOperate.forEach((product: any) => {
-      for (let q = 0; q < Number(product.saleCount); q += 1) {
+      for (let q = 0; q < Number(product.saleCount || product.quantity); q += 1) {
         products.push(product);
       }
     });
