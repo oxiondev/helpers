@@ -1,4 +1,4 @@
-interface OrderStatus {
+type OrderStatus =  {
   id: number,
   key: string,
   orderSources: {
