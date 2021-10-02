@@ -1,6 +1,6 @@
 {
   "name": "@oxiondev/helpers",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Oxion Helpers",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
