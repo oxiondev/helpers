@@ -55,7 +55,7 @@ export const createExpenseInvoiceObject = (orderData) => {
   const totalDiscountPerProduct = totalDiscount / products.length;
 
   products = products.map(product => {
-    let returnObject = {
+    const returnObject = {
       productName: '',
       amount: 0,
       amountCleanFormat: '',
@@ -71,7 +71,7 @@ export const createExpenseInvoiceObject = (orderData) => {
         campaignDiscountAmount = Number(product.campaignDiscountAmount)
       }
 
-      let totalPrice = Number((Number(product.sellingPrice) - totalDiscountPerProduct - campaignDiscountAmount).toFixed(2))
+      const totalPrice = Number((Number(product.sellingPrice) - totalDiscountPerProduct - campaignDiscountAmount).toFixed(2))
       const {
         amountWithoutVat,
         amountCleanFormat,
@@ -131,7 +131,7 @@ export const createExpenseInvoiceObject = (orderData) => {
   let totalAmount = products.reduce((acc, cur) => acc + cur.amount, 0);
   let totalVat = products.reduce((acc, cur) => acc + cur.vatAmount, 0);
 
-  let totalVatIncludedAmount = Number((totalAmount + totalVat).toFixed(2));
+  const totalVatIncludedAmount = Number((totalAmount + totalVat).toFixed(2));
 
   totalAmount = Number(Number(totalAmount).toFixed(2))
   totalVat = Number(Number(totalVat).toFixed(2))

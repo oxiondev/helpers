@@ -1,8 +1,9 @@
 type OrderStatus =  {
-  id: number,
-  key: string,
-  orderSources: {
-    [key: string]: string
+  readonly id: number,
+  readonly key: string,
+  readonly color: string,
+  readonly orderSources: {
+    readonly [key: string]: string
   }
 }
 
@@ -15,9 +16,10 @@ type OrderStatus =  {
  * that way will help us to scale and manage easily. Also those keys can be used
  * if we want to show integration specific translation. or show a hint
  */
-const orderStatuses: OrderStatus[] = [
+const orderStatuses: readonly OrderStatus[] = [
   {
     id: 0,
+    color: 'bg-blue text-white',
     key: 'draft',
     orderSources: {
       ProStock: 'draft',
@@ -26,7 +28,8 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 1,
-    key: 'pending',
+    color: 'bg-blue text-white',
+    key: 'waitingConfirmation',
     orderSources: {
       ProStock: 'pending',
       TicimaxWeb: '1',
@@ -35,6 +38,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 2,
+    color: 'bg-green text-white',
     key: 'confirmed',
     orderSources: {
       ProStock: 'confirmed',
@@ -43,6 +47,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 3,
+    color: 'bg-orange text-black',
     key: 'waitingPayment',
     orderSources: {
       ProStock: 'waitingPayment',
@@ -51,7 +56,8 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 4,
-    key: 'processing',
+    color: 'bg-purple text-white',
+    key: 'packaging',
     orderSources: {
       ProStock: 'processing',
       TicimaxWeb: '4',
@@ -60,6 +66,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 5,
+    color: 'bg-green-700 text-white',
     key: 'waitingSupplier',
     orderSources: {
       ProStock: 'waitingSupplier',
@@ -68,6 +75,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 6,
+    color: 'bg-pink text-white',
     key: 'shipped',
     orderSources: {
       ProStock: 'shipped',
@@ -76,7 +84,8 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 7,
-    key: 'completed',
+    color: 'bg-red text-white',
+    key: 'delivered',
     orderSources: {
       ProStock: 'completed',
       TicimaxWeb: '7',
@@ -85,7 +94,8 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 8,
-    key: 'cancelled',
+    color: 'bg-red-700 text-white',
+    key: 'canceled',
     orderSources: {
       ProStock: 'cancelled',
       WooCommerce: 'cancelled',
@@ -94,6 +104,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 9,
+    color: 'bg-purple-300 text-white',
     key: 'returned',
     orderSources: {
       ProStock: 'returned',
@@ -103,6 +114,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 10,
+    color: 'bg-blue text-white',
     key: 'deleted',
     orderSources: {
       ProStock: 'deleted',
@@ -112,6 +124,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 11,
+    color: 'bg-blue-700 text-white',
     key: 'returnRequestReceived',
     orderSources: {
       TicimaxWeb: '11'
@@ -119,6 +132,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 12,
+    color: 'bg-green-800 text-white',
     key: 'returnArrivedWaitingPayment',
     orderSources: {
       TicimaxWeb: '12'
@@ -126,6 +140,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 13,
+    color: 'bg-purple-700 text-white',
     key: 'returnPaymentCompleted',
     orderSources: {
       TicimaxWeb: '13'
@@ -133,6 +148,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 14,
+    color: 'bg-blue-800 text-white',
     key: 'cancelRequestBeforeDelivery',
     orderSources: {
       TicimaxWeb: '14'
@@ -140,6 +156,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 15,
+    color: 'bg-blue-800 text-white',
     key: 'cancelRequest',
     orderSources: {
       TicimaxWeb: '15'
@@ -147,6 +164,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 16,
+    color: 'bg-blue-800 text-white',
     key: 'partialReturnRequest',
     orderSources: {
       TicimaxWeb: '16'
@@ -154,6 +172,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 17,
+    color: 'bg-blue-800 text-white',
     key: 'partialReturnCompleted',
     orderSources: {
       TicimaxWeb: '17'
@@ -161,6 +180,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 18,
+    color: 'bg-blue-800 text-white',
     key: 'cannotDelivered',
     orderSources: {
       TicimaxWeb: '18'
@@ -168,6 +188,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 19,
+    color: 'bg-blue-800 text-white',
     key: 'onHold',
     orderSources: {
       WooCommerce: 'on-hold',
@@ -176,6 +197,7 @@ const orderStatuses: OrderStatus[] = [
   },
   {
     id: 20,
+    color: 'bg-blue-800 text-white',
     key: 'failed',
     orderSources: {
       ProStock: 'failed',
@@ -238,11 +260,30 @@ const getStatusAtOrderSourceFromOrderSource = (orderSource: string, statusAtOxio
   }
 }
 
+const prostockOrderStatuses = orderStatuses.filter(x => Object.keys(x.orderSources).includes('ProStock'))
 
-export default {
+/**
+ * Returns orderstatuses by orderSource
+ * @param orderSource {string}
+ * @param useFallback {boolean}
+ */
+const getOrderStatusesByOrderSource = (orderSource: string, useFallback: boolean = false) => {
+  const statuses = orderStatuses.filter(x => Object.keys(x.orderSources).includes(orderSource));
+  if(statuses.length) {
+    return statuses;
+  } else if(useFallback){
+    return prostockOrderStatuses;
+  } else {
+    throw Error('Couldnt find')
+  }
+}
+
+
+export {
   orderStatuses,
   getOrderStatusFromStatusAtOrderSource,
-  getStatusAtOrderSourceFromOrderSource
+  getStatusAtOrderSourceFromOrderSource,
+  getOrderStatusesByOrderSource
 }
 
 
